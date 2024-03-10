@@ -1,0 +1,32 @@
+Name,Brand,RPM,EnergyRating,FastestProgram,Capacity
+Washer A,ABC Appliances,1200,A+++,30 minutes,8 kg
+Washer B,XYZ Electronics,1400,A++,28 minutes,7.5 kg
+Washer C,HomeTech,1000,A+++,35 minutes,8.5 kg
+Washer D,SmartWash,1600,A++,25 minutes,7 kg
+Washer E,QuickClean,1300,A+++,32 minutes,8 kg
+Washer F,SwiftWash,1100,A++,30 minutes,7 kg
+Washer G,EcoCare,1500,A+++,28 minutes,9 kg
+Washer H,PowerWash,1200,A++,26 minutes,7.5 kg
+Washer I,GreenTech,1400,A+++,31 minutes,8 kg
+Washer J,SpeedyWash,1300,A++,29 minutes,7.5 kg
+Washer K,SuperSuds,1200,A+++,33 minutes,8 kg
+Washer L,UltimateClean,1500,A++,27 minutes,7 kg
+Washer M,MaxLoad,1100,A+++,34 minutes,8.5 kg
+Washer N,TurboWash,1400,A++,26 minutes,7.5 kg
+Washer O,EnergySaver,1300,A+++,30 minutes,8 kg
+Washer P,EliteWash,1600,A++,24 minutes,7 kg
+Washer Q,SmartCycle,1200,A+++,29 minutes,8.5 kg
+Washer R,QuickDry,1400,A++,31 minutes,7.5 kg
+Washer S,OptiClean,1300,A+++,28 minutes,8 kg
+Washer T,ProWash,1100,A++,32 minutes,7 kg
+Washer U,GreenCycle,1500,A+++,25 minutes,8.5 kg
+Washer V,SpeedCycle,1200,A++,30 minutes,7.5 kg
+Washer W,EcoDry,1400,A+++,28 minutes,8 kg
+Washer X,SuperWash,1300,A++,27 minutes,7.5 kg
+Washer Y,QuickWash,1100,A+++,29 minutes,8 kg
+Washer Z,MaxClean,1500,A++,26 minutes,7 kg
+Washer AA,EcoWash,1200,A+++,31 minutes,8.5 kg
+Washer BB,PowerClean,1400,A++,28 minutes,7.5 kg
+Washer CC,QuickCycle,1300,A+++,30 minutes,8 kg
+Washer DD,EnergyClean,1100,A++,29 minutes,7 kg
+Washer EE,SpeedyClean,1600,A+++,25 minutes,8.5 kg

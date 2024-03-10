@@ -6,13 +6,9 @@ export interface CardRepository {
     GetCards(): Card[];
 }
 
-var cardRepo: CardRepository;
-
 export async function getCardRepository(): Promise<CardRepository> {
-    if (cardRepo === undefined) {
-        cardRepo = createMemoryRepository();
-        cardRepo.CardCollection = await populateRepositoryFromFile("Megawash Data.csv");
-    }
+    var cardRepo = createMemoryRepository();
+    cardRepo = await populateRepositoryFromFile(cardRepo, "Megawash Data.csv");
     return cardRepo;
 }
 
@@ -30,7 +26,7 @@ export function createMemoryRepository(): MemoryCardRepo {
     return new MemoryCardRepo();
 }
 
-export async function populateRepositoryFromFile(path: string): Promise<Card[]> {
+export async function populateRepositoryFromFile(repository: CardRepository, path: string): Promise<CardRepository> {
     const file = await fsPromise.open(path, "r");
     if (!file) {
         throw new Error("File not found");
@@ -53,5 +49,6 @@ export async function populateRepositoryFromFile(path: string): Promise<Card[]> 
         };
         cardCollection.push(card);
     }
-    return cardCollection;
+    repository.CardCollection = cardCollection;
+    return repository;
 }

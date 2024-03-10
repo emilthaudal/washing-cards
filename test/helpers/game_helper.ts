@@ -23,6 +23,9 @@ export async function createGame(limit: number | null): Promise<Game> {
     };
     const response = await request(app).post("/api/game").send(req);
 
+    if (response.status != 200) {
+        throw new Error("Failed to create game with error " + response.text);
+    }
     // assert
     expect(response.status).toEqual(200);
     var body = JSON.parse(JSON.stringify(response.body)) as Game;

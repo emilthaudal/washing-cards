@@ -31,7 +31,9 @@ export const newGame = async (req: Request, res: Response) => {
         const cards = cardRepo.GetCards();
 
         if (cards.length < gameRequest.players.length) {
-            res.status(400).send("Not enough cards for the number of players");
+            res.status(400).send(
+                `Not enough cards for the number of players. Cards: ${cards.length}, Players: ${gameRequest.players.length}`
+            );
             return;
         }
 
