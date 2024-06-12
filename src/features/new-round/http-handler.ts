@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { NewRoundRequest } from "./request";
-import { Game, Matchups, Participant, Round, RoundEntry } from "../../domain/game/model";
-import { Card, Feature, getWinnersByFeature, randomFeature } from "../../domain/card/model";
+import { NewRoundRequest } from "./schema";
+import { Game, Matchups, Round, RoundEntry } from "../../domain/game/model";
+import { Card, getWinnersByFeature, randomFeature } from "../../domain/card/model";
 import { getGameRepository } from "../../domain/game/repository";
 
 export const newRound = (req: Request, res: Response) => {
-    var request: NewRoundRequest;
+    let request: NewRoundRequest;
     try {
         request = JSON.parse(JSON.stringify(req.body)) as NewRoundRequest;
     } catch (error) {
@@ -23,8 +23,8 @@ export const newRound = (req: Request, res: Response) => {
         return;
     }
 
-    var gameRepo = getGameRepository();
-    var game = gameRepo.GetGame(request.gameId);
+    const gameRepo = getGameRepository();
+    let game = gameRepo.GetGame(request.gameId);
     if (game === undefined) {
         res.status(404).send("Game not found");
         return;
@@ -41,8 +41,8 @@ export const newRound = (req: Request, res: Response) => {
     }
 
     // Initialize Round
-    var roundCards: RoundEntry[] = [];
-    for (let participant of game.participants) {
+    const roundCards: RoundEntry[] = [];
+    for (const participant of game.participants) {
         if (participant.cards.length == 0) {
             participant.eliminated = true;
             continue;
@@ -60,15 +60,15 @@ export const newRound = (req: Request, res: Response) => {
         return;
     }
 
-    var matchup: Matchups = { entries: roundCards };
+    const matchup: Matchups = { entries: roundCards };
 
-    var botTurn = game.participants.find((p) => p.hasTurn && p.bot);
+    const botTurn = game.participants.find((p) => p.hasTurn && p.bot);
     if (botTurn) {
         // set random feature
         request.feature = randomFeature();
     }
 
-    var round: Round = {
+    const round: Round = {
         feature: request.feature,
         completed: false,
         roundWinner: null,
@@ -87,7 +87,7 @@ export const newRound = (req: Request, res: Response) => {
     }
 
     // move turn to next player
-    var currentTurn = game.participants.findIndex((p) => p.hasTurn);
+    const currentTurn = game.participants.findIndex((p) => p.hasTurn);
     game.participants[currentTurn].hasTurn = false;
     game.participants[(currentTurn + 1) % game.participants.length].hasTurn = true;
 
@@ -97,17 +97,17 @@ export const newRound = (req: Request, res: Response) => {
 };
 
 function getWinnerLastRound(game: Game): Game {
-    var round = game.rounds[game.rounds.length - 1];
-    var winners = getWinnersByFeature(round.matchups[0].entries, round.feature);
+    const round = game.rounds[game.rounds.length - 1];
+    let winners = getWinnersByFeature(round.matchups[0].entries, round.feature);
     while (winners.length > 1) {
         winners = handleTiebreak(game, winners);
     }
     round.roundWinner = game.participants.find((p) => winners.find((winner) => winner.participant === p.name)).name;
     round.completed = true;
 
-    var cardPool: Card[] = [];
-    for (let matchup of round.matchups) {
-        for (let entry of matchup.entries) {
+    const cardPool: Card[] = [];
+    for (const matchup of round.matchups) {
+        for (const entry of matchup.entries) {
             cardPool.push(entry.card);
         }
     }
@@ -119,8 +119,8 @@ function getWinnerLastRound(game: Game): Game {
 }
 
 function handleTiebreak(game: Game, winners: RoundEntry[]): RoundEntry[] {
-    var tieBreakEntries: RoundEntry[] = [];
-    for (let participant of game.participants) {
+    const tieBreakEntries: RoundEntry[] = [];
+    for (const participant of game.participants) {
         if (winners.find((w) => w.participant === participant.name) === undefined) {
             continue;
         }
@@ -128,7 +128,7 @@ function handleTiebreak(game: Game, winners: RoundEntry[]): RoundEntry[] {
             participant.eliminated = true;
             continue;
         }
-        var card = participant.cards.pop();
+        const card = participant.cards.pop();
         tieBreakEntries.push({ card: card, participant: participant.name });
     }
     game.rounds[game.rounds.length - 1].matchups.push({ entries: tieBreakEntries });

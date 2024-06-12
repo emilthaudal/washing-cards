@@ -1,10 +1,10 @@
-import app from "../../src/app";
+import app from "../../src/server";
 import { Game } from "../../src/domain/game/model";
-import { CreateGameRequest } from "../../src/features/create-game/request";
+import { CreateGameRequest } from "../../src/features/create-game/schema";
 import request from "supertest";
 
 export async function createGame(limit: number | null): Promise<Game> {
-    var req: CreateGameRequest = {
+    const req: CreateGameRequest = {
         limit: limit,
         players: [
             {
@@ -28,6 +28,6 @@ export async function createGame(limit: number | null): Promise<Game> {
     }
     // assert
     expect(response.status).toEqual(200);
-    var body = JSON.parse(JSON.stringify(response.body)) as Game;
+    const body = JSON.parse(JSON.stringify(response.body)) as Game;
     return body;
 }

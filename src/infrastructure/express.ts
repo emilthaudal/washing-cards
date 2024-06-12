@@ -1,6 +1,6 @@
 import express from "express";
-import { newRound } from "./features/new-round/api";
-import { newGame } from "./features/create-game/api";
+import { newRound } from "../features/new-round/http-handler";
+import { newGame } from "../features/create-game/http-handler";
 
 const app = express();
 const port = 3000;

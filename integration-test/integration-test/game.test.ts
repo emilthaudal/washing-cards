@@ -1,16 +1,16 @@
 import request from "supertest";
-import app from "../../src/app";
-import { CreateGameRequest } from "../../src/features/create-game/request";
+import app from "../../src/infrastructure/express";
+import { CreateGameRequest } from "../../src/features/create-game/schema";
 import { randomUUID } from "crypto";
 import { Game } from "../../src/domain/game/model";
 import { createGame } from "../helpers/game_helper";
-import { NewRoundRequest } from "../../src/features/new-round/request";
+import { NewRoundRequest } from "../../src/features/new-round/schema";
 import { Feature, randomFeature } from "../../src/domain/card/model";
 
 describe("api/game", () => {
     it("should create a new game", async () => {
         //arrange
-        var req: CreateGameRequest = {
+        const req: CreateGameRequest = {
             limit: 10,
             players: [
                 {
@@ -33,7 +33,7 @@ describe("api/game", () => {
 
         // assert
         expect(response.status).toEqual(200);
-        var body = JSON.parse(response.text) as Game;
+        const body = JSON.parse(response.text) as Game;
         expect(body.participants.length).toEqual(3);
         expect(body.roundLimit).toEqual(10);
         expect(body.finished).toBeFalsy();
@@ -42,7 +42,7 @@ describe("api/game", () => {
 
     it("should fail without players", async () => {
         //arrange
-        var req: CreateGameRequest = {
+        const req: CreateGameRequest = {
             limit: 10,
             players: [],
         };
@@ -59,8 +59,8 @@ describe("api/game/round", () => {
     it("should start and play a new round", async () => {
         //arrange
 
-        var game = await createGame(10);
-        var req: NewRoundRequest = {
+        const game = await createGame(10);
+        const req: NewRoundRequest = {
             gameId: game.id,
             feature: Feature.Capacity,
         };
@@ -70,7 +70,7 @@ describe("api/game/round", () => {
 
         // assert
         expect(response.status).toEqual(200);
-        var body = JSON.parse(response.text) as Game;
+        const body = JSON.parse(response.text) as Game;
         expect(body.rounds.length).toEqual(1);
         expect(body.rounds[0].feature).toEqual(Feature.Capacity);
         expect(body.rounds[0].roundWinner).toBeDefined();
@@ -78,13 +78,13 @@ describe("api/game/round", () => {
 
     it("should start and play until the limit is reached", async () => {
         //arrange
-        var game = await createGame(10);
+        let game = await createGame(10);
 
-        var rounds = game.roundLimit ?? 10;
+        const rounds = game.roundLimit ?? 10;
 
         // act
         for (let i = 0; i < rounds ?? 10; i++) {
-            var req: NewRoundRequest = {
+            const req: NewRoundRequest = {
                 gameId: game.id,
                 feature: randomFeature(),
             };
@@ -100,11 +100,11 @@ describe("api/game/round", () => {
 
     it("should start and play until only one player has cards left", async () => {
         //arrange
-        var game = await createGame(null);
+        let game = await createGame(null);
 
         // act
         while (!game.finished) {
-            var req: NewRoundRequest = {
+            const req: NewRoundRequest = {
                 gameId: game.id,
                 feature: randomFeature(),
             };

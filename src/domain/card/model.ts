@@ -1,5 +1,4 @@
-import { Participant, Round, RoundEntry } from "../game/model";
-import { Player } from "../player/model";
+import { RoundEntry } from "../game/model";
 
 export type Card = {
     name: string;
@@ -41,21 +40,21 @@ export function sortEntriesByFeature(entries: RoundEntry[], feature: Feature): R
             return entries.sort((a, b) => b.card.rpm - a.card.rpm);
         case Feature.EnergyRating:
             return entries.sort((a, b) => {
-                var energyRatingOrder = ["A+++", "A++", "A+", "A", "B", "C", "D", "E", "F", "G"];
-                var aIndex = energyRatingOrder.indexOf(a.card.energyRating);
-                var bIndex = energyRatingOrder.indexOf(b.card.energyRating);
+                const energyRatingOrder = ["A+++", "A++", "A+", "A", "B", "C", "D", "E", "F", "G"];
+                const aIndex = energyRatingOrder.indexOf(a.card.energyRating);
+                const bIndex = energyRatingOrder.indexOf(b.card.energyRating);
                 return aIndex - bIndex;
             });
         case Feature.FastestProgram:
             return entries.sort((a, b) => {
-                var aTime = parseInt(a.card.fastestProgram.split(" ")[0]);
-                var bTime = parseInt(b.card.fastestProgram.split(" ")[0]);
+                const aTime = parseInt(a.card.fastestProgram.split(" ")[0]);
+                const bTime = parseInt(b.card.fastestProgram.split(" ")[0]);
                 return aTime - bTime;
             });
         case Feature.Capacity:
             return entries.sort((a, b) => {
-                var aCapacity = parseInt(a.card.capacity.split(" ")[0]);
-                var bCapacity = parseInt(b.card.capacity.split(" ")[0]);
+                const aCapacity = parseInt(a.card.capacity.split(" ")[0]);
+                const bCapacity = parseInt(b.card.capacity.split(" ")[0]);
                 return bCapacity - aCapacity;
             });
     }
@@ -63,7 +62,7 @@ export function sortEntriesByFeature(entries: RoundEntry[], feature: Feature): R
 
 function findWinnersByRpm(entries: RoundEntry[]): RoundEntry[] {
     const sortedCards = sortEntriesByFeature(entries, Feature.Rpm);
-    var maxRpm = sortedCards[0].card.rpm;
+    const maxRpm = sortedCards[0].card.rpm;
 
     const winners: RoundEntry[] = [];
     entries.forEach((entry) => {

@@ -1,9 +1,8 @@
-import { randomUUID } from "crypto";
-import { Round, RoundEntry } from "../../src/domain/game/model";
-import { Feature, sortEntriesByFeature } from "../../src/domain/card/model";
+import { RoundEntry } from "../game/model";
+import { Feature, sortEntriesByFeature } from "./model";
 
 describe("sort entries by feature", () => {
-    var entries: RoundEntry[] = [
+    const entries: RoundEntry[] = [
         {
             card: {
                 brand: "Brand 1",

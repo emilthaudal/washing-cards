@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CreateGameRequest } from "./request";
+import { CreateGameRequest } from "./schema";
 import { Game, Participant } from "../../domain/game/model";
 import { randomUUID } from "crypto";
 import { Card } from "../../domain/card/model";
@@ -8,7 +8,7 @@ import { getGameRepository } from "../../domain/game/repository";
 import { getCardRepository } from "../../domain/card/repository";
 
 export const newGame = async (req: Request, res: Response) => {
-    var gameRequest: CreateGameRequest;
+    let gameRequest: CreateGameRequest;
     try {
         gameRequest = JSON.parse(JSON.stringify(req.body)) as CreateGameRequest;
     } catch (error) {
@@ -41,7 +41,7 @@ export const newGame = async (req: Request, res: Response) => {
 
         const game: Game = new Game(randomUUID(), participants, [], gameRequest.limit);
 
-        var repo = getGameRepository();
+        const repo = getGameRepository();
 
         repo.SaveGame(game);
 
@@ -54,7 +54,7 @@ export const newGame = async (req: Request, res: Response) => {
 function createParticipants(cards: Card[], players: Player[]): Participant[] {
     const shuffled = cards.sort(() => Math.random() - 0.5);
 
-    let participants = players.map((p) => {
+    const participants = players.map((p) => {
         const participant: Participant = {
             name: p.name,
             playerID: p.id,
@@ -92,7 +92,7 @@ function createParticipants(cards: Card[], players: Player[]): Participant[] {
         });
     }
 
-    var hasTurn = Math.floor(Math.random() * participants.length);
+    const hasTurn = Math.floor(Math.random() * participants.length);
     participants[hasTurn].hasTurn = true;
 
     return participants;

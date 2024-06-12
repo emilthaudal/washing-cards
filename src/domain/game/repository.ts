@@ -1,4 +1,3 @@
-import { UUID } from "crypto";
 import { Game } from "./model";
 
 export interface GameRepository {
@@ -8,7 +7,7 @@ export interface GameRepository {
     SaveGame(game: Game): void;
 }
 
-var gameRepo: GameRepository;
+let gameRepo: GameRepository;
 
 export function getGameRepository(): GameRepository {
     if (gameRepo === undefined) {
@@ -33,7 +32,7 @@ export class MemoryGameRespository implements GameRepository {
 
     SaveGame(game: Game): void {
         if (this.GetGame(game.id)) {
-            var index = this.GameCollection.findIndex((g) => g.id === game.id);
+            const index = this.GameCollection.findIndex((g) => g.id === game.id);
             this.GameCollection[index] = game;
         }
         this.GameCollection.push(game);

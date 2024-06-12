@@ -1,6 +1,4 @@
-import app from "./app";
-import { createMemoryRepository, populateRepositoryFromFile } from "./domain/card/repository";
-import { createMemoryGameRepository } from "./domain/game/repository";
+import app from "./infrastructure/express";
 
 /**
  * Start Express server.

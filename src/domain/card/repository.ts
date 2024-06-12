@@ -7,7 +7,7 @@ export interface CardRepository {
 }
 
 export async function getCardRepository(): Promise<CardRepository> {
-    var cardRepo = createMemoryRepository();
+    let cardRepo = createMemoryRepository();
     cardRepo = await populateRepositoryFromFile(cardRepo, "Megawash Data.csv");
     return cardRepo;
 }
