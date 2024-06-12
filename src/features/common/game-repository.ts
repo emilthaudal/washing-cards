@@ -1,4 +1,4 @@
-import { Game } from "./model";
+import { Game } from "../../domain/game/model";
 
 export interface GameRepository {
     GameCollection: Game[];

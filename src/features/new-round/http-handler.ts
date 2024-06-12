@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { NewRoundRequest } from "./schema";
 import { Game, Matchups, Round, RoundEntry } from "../../domain/game/model";
 import { Card, getWinnersByFeature, randomFeature } from "../../domain/card/model";
-import { getGameRepository } from "../../domain/game/repository";
+import { getGameRepository } from "../common/game-repository";
 
 export const newRound = (req: Request, res: Response) => {
     let request: NewRoundRequest;

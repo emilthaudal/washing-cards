@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import { CreateGameRequest } from "./schema";
-import { Game, Participant } from "../../domain/game/model";
-import { randomUUID } from "crypto";
-import { Card } from "../../domain/card/model";
-import { Player } from "../../domain/player/model";
-import { getGameRepository } from "../../domain/game/repository";
-import { getCardRepository } from "../../domain/card/repository";
+import { createGame } from "./service";
 
 export const newGame = async (req: Request, res: Response) => {
     let gameRequest: CreateGameRequest;
@@ -26,74 +21,5 @@ export const newGame = async (req: Request, res: Response) => {
         return;
     }
 
-    try {
-        const cardRepo = await getCardRepository();
-        const cards = cardRepo.GetCards();
-
-        if (cards.length < gameRequest.players.length) {
-            res.status(400).send(
-                `Not enough cards for the number of players. Cards: ${cards.length}, Players: ${gameRequest.players.length}`
-            );
-            return;
-        }
-
-        const participants = createParticipants(cards, gameRequest.players);
-
-        const game: Game = new Game(randomUUID(), participants, [], gameRequest.limit);
-
-        const repo = getGameRepository();
-
-        repo.SaveGame(game);
-
-        res.send(game);
-    } catch (error) {
-        res.status(500).send(`Error creating game: ${error}`);
-    }
+    return await createGame(gameRequest.players, gameRequest.limit);
 };
-
-function createParticipants(cards: Card[], players: Player[]): Participant[] {
-    const shuffled = cards.sort(() => Math.random() - 0.5);
-
-    const participants = players.map((p) => {
-        const participant: Participant = {
-            name: p.name,
-            playerID: p.id,
-            cards: [],
-            bot: false,
-            hasTurn: false,
-            eliminated: false,
-        };
-        return participant;
-    });
-
-    const missingParticipants = 3 - participants.length;
-
-    // Populate with bots
-    if (missingParticipants > 0) {
-        for (let i = 0; i < missingParticipants; i++) {
-            participants.push({
-                name: `Bot ${i + 1}`,
-                playerID: null,
-                cards: [],
-                bot: true,
-                hasTurn: false,
-                eliminated: false,
-            });
-        }
-    }
-
-    if (shuffled.length < players.length) {
-        throw new Error("Not enough cards for the number of players");
-    }
-
-    while (shuffled.length > 1) {
-        participants.forEach((p) => {
-            p.cards.push(shuffled.pop());
-        });
-    }
-
-    const hasTurn = Math.floor(Math.random() * participants.length);
-    participants[hasTurn].hasTurn = true;
-
-    return participants;
-}

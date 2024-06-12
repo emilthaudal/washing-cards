@@ -1,4 +1,4 @@
-import { Card } from "./model";
+import { Card } from "../../domain/card/model";
 import * as fsPromise from "fs/promises";
 
 export interface CardRepository {
